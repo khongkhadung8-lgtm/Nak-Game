@@ -24,20 +24,51 @@ public class BirdScript : MonoBehaviour
             myRigidbody.linearVelocity = Vector2.up * flapStrength;
         }
         // Use camera field to calculate when the bird falls off player screen or go up too high
-        float screenTop = Camera.main.transform.position.y + Camera.main.orthographicSize;
-        float screenBottom = Camera.main.transform.position.y - Camera.main.orthographicSize;
+        float screenTop = Camera.main.transform.position.y
+                  + Camera.main.orthographicSize;
 
-        if ((transform.position.y > screenTop + 1f || transform.position.y < screenBottom - 1f) && birdIsAlive == true)
+        float screenBottom = Camera.main.transform.position.y
+                             - Camera.main.orthographicSize;
+
+        // Get bird's collider size
+        float birdHeight = GetComponent<Collider2D>().bounds.extents.y;
+
+        float minY = screenBottom + birdHeight;
+        float maxY = screenTop - birdHeight;
+
+        if (transform.position.y < minY ||
+            transform.position.y > maxY)
         {
-            birdIsAlive = false;
-            logic.gameOver();
+            // Keep bird inside camera boundaries
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Clamp(pos.y, minY, maxY);
+            transform.position = pos;
+
+            StopBird();
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        birdIsAlive = false;
-        logic.gameOver();
+        if (birdIsAlive == true)
+        {
+            StopBird();
+        }
     }
 
+    public void StopBird()
+    {
+        birdIsAlive = false;
+
+        // Stop bird's movement
+        myRigidbody.linearVelocity = Vector2.zero;
+
+        // Disable gravity
+        myRigidbody.gravityScale = 0;
+
+        // Freeze bird's position and rotation
+        myRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+        logic.gameOver();
+    }
 }

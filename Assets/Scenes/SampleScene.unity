@@ -444,7 +444,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0.1, y: -0.7}
-  m_Radius: 6.15
+  m_Radius: 5.48
 --- !u!1 &339432896
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +695,7 @@ MonoBehaviour:
   playerScore: 0
   scoreText: {fileID: 1963642916}
   gameOverScreen: {fileID: 1542245719}
+  isGameOver: 0
 --- !u!4 &613425741
 Transform:
   m_ObjectHideFlags: 0
