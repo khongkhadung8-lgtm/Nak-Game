@@ -17,7 +17,7 @@ public class PipeSpawnScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (logic.isGameOver == true)
+        if (logic.isGameStarted == false || logic.isGameOver == true)
         {
             return;
         }

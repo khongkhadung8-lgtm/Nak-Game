@@ -18,6 +18,10 @@ public class BirdScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (logic.isGameStarted == false || birdIsAlive == false)
+        {
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) == true && birdIsAlive == true)
         {
@@ -50,7 +54,7 @@ public class BirdScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (birdIsAlive == true)
+        if (birdIsAlive == true && logic.isGameStarted == true)
         {
             StopBird();
         }

@@ -7,7 +7,8 @@ public class LogicScript : MonoBehaviour
     public Text scoreText;
     public GameObject gameOverScreen;
     public bool isGameOver = false;
-
+    public bool isGameStarted = false;
+    public GameObject gameBeginCanvas;
     [ContextMenu("Increase score")]
     public void addScore(int scoreToAdd)
     {
@@ -17,6 +18,7 @@ public class LogicScript : MonoBehaviour
 
     public void restartGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -29,5 +31,19 @@ public class LogicScript : MonoBehaviour
 
         isGameOver = true;
         gameOverScreen.SetActive(true);
+    }
+
+    void Awake()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void startGame()
+    {
+        isGameStarted = true;
+
+        gameBeginCanvas.SetActive(false);
+
+        Time.timeScale = 1;
     }
 }
