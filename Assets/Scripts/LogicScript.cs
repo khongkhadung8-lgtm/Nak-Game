@@ -2,8 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 public class LogicScript : MonoBehaviour
 {
+    [Header("Sound Effects")]
+    public AudioSource audioSource;
+
+    public AudioClip buttonSound;
+    public AudioClip birdFlapSound;
+    public AudioClip gameOverSound;
+
     [Header("High Score UI")]
     public GameObject highScorePanel;
 
@@ -25,8 +33,20 @@ public class LogicScript : MonoBehaviour
 
     public void restartGame()
     {
+        PlayButtonSound();
+
+        StartCoroutine(RestartAfterSound());
+    }
+
+    IEnumerator RestartAfterSound()
+    {
+        yield return new WaitForSecondsRealtime(buttonSound.length);
+
         Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        SceneManager.LoadScene(
+            SceneManager.GetActiveScene().name
+        );
     }
 
     public void gameOver()
@@ -40,6 +60,8 @@ public class LogicScript : MonoBehaviour
 
         // Lưu điểm vào bảng Top 3
         SaveHighScore(playerScore);
+
+        PlayGameOverSound();
 
         // Hiển thị Game Over
         gameOverScreen.SetActive(true);
@@ -55,6 +77,8 @@ public class LogicScript : MonoBehaviour
 
     public void startGame()
     {
+        PlayButtonSound();
+
         isGameStarted = true;
 
         gameBeginCanvas.SetActive(false);
@@ -76,6 +100,7 @@ public class LogicScript : MonoBehaviour
 
     public void ShowHighScores()
     {
+        PlayButtonSound();
         UpdateHighScoreUI();
         highScorePanel.SetActive(true);
     }
@@ -112,5 +137,20 @@ public class LogicScript : MonoBehaviour
         PlayerPrefs.SetInt("HighScore3", score3);
 
         PlayerPrefs.Save();
+    }
+
+    public void PlayButtonSound()
+    {
+        audioSource.PlayOneShot(buttonSound);
+    }
+
+    public void PlayFlapSound()
+    {
+        audioSource.PlayOneShot(birdFlapSound, 0.5f);
+    }
+
+    public void PlayGameOverSound()
+    {
+        audioSource.PlayOneShot(gameOverSound);
     }
 }

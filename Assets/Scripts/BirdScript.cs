@@ -25,6 +25,7 @@ public class BirdScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) == true && birdIsAlive == true)
         {
+            logic.PlayFlapSound();
             myRigidbody.linearVelocity = Vector2.up * flapStrength;
         }
         // Use camera field to calculate when the bird falls off player screen or go up too high
